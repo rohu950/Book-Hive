@@ -1,9 +1,30 @@
 import React from 'react';
 import Cards from "./Cards";
-import list from "../../public/list.json";
-import {Link} from "react-router-dom"
+
+import axios from "axios";
+import {Link} from "react-router-dom";
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { getBook } from '../../../backend/controller/book.controller';
 
 function Course() {
+  const [book, setBook]=useState([]);
+  useEffect(()=>{
+const getBook = async()=>{
+
+try {
+const res = await axios.get("http://localhost:4001/book");
+console.log(res.data);
+setBook(res.data);
+  
+} catch (error) {
+  console.log( error);
+  
+}
+
+}
+getBook();
+  },[]);
   return (
   <>
   <div className="min-h-screen bg-white dark:bg-slate-950 px-6 py-12 pt-20 text-black dark:text-white transition-colors duration-300">
@@ -29,7 +50,7 @@ Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor,
 <div  className="mt-12 grid grid-cols-1 md:grid-cols-4">
 {
 
-list.map((item )=>(
+book.map((item )=>(
   <Cards key={item.id} item={item} />
 
 ))
